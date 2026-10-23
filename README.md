@@ -4,7 +4,7 @@ A responsive personal task manager built with MongoDB, Express, React, and Node.
 
 **Repository:** [github.com/anzil225737-tech/capstone-project](https://github.com/anzil225737-tech/capstone-project)
 
-**Hosted application:** Pending deployment.
+**Hosted application:** Pending Railway deployment and production database configuration.
 **Requirements specification:** [docs/Software Requirements Specification](docs/Software_Requirements_Specification.docx)
 
 ## Features
@@ -81,17 +81,18 @@ All routes use `/api/v1`. Authenticated routes expect `Authorization: Bearer <to
 
 List pagination defaults to 20 records and allows a maximum page size of 100. Error responses use a safe `{ "error": { "code", "message" } }` shape. The API returns 404 for tasks that do not exist or do not belong to the signed-in user.
 
-## Deployment
+## Deployment (Railway + MongoDB Atlas)
 
-The repository is public and can be imported into a hosting service. Deploy the API and React client as separate services, and provision a managed MongoDB database.
+The app is configured as one Railway web service: Express serves the production React build and the `/api/v1` API from the same HTTPS origin. The source repository is public at [GitHub](https://github.com/anzil225737-tech/capstone-project).
 
-1. Set the API start command to `npm start` from `server/` (or the repository root command `npm start`), and configure `MONGODB_URI`, `JWT_SECRET`, `PORT`, and the deployed client's exact origin in `CLIENT_URL`.
-2. Build the client with `npm run build` in `client/`; publish the generated `client/dist` directory as a static site.
-3. Set `VITE_API_URL` to the deployed API's `/api/v1` URL before building the client.
-4. Enable HTTPS and configure the static host's SPA fallback so deep links serve `index.html`.
-5. Open the live site and verify registration, sign-in, task creation/edit/completion/deletion, cross-user access protection, mobile layout, and page refresh. Then add the hosted URL above and to the SRS.
+1. In Railway, create a project from the GitHub repository and use the repository root as the service root directory.
+2. Set the build command to `npm ci && npm ci --prefix server && npm ci --prefix client && npm run build --prefix client` and the start command to `npm start`.
+3. Add `MONGODB_URI` (your Atlas connection string), `JWT_SECRET` (a long randomly generated secret), and `NODE_ENV=production` in the Railway service's Variables. Keep these values in Railway's secret settings; never commit them. Railway supplies `PORT`.
+4. In Atlas, add the Railway service's outbound address to the project's IP access list. Railway's static outbound IP feature is limited to its Pro plan. Avoid opening the Atlas database to all IP addresses; use a restricted network path supported by your account or a host with a fixed outbound IP.
+5. Deploy the service, then generate its public domain from Railway service Settings → Networking. Test the sign-up/sign-in flow and task actions using the HTTPS domain.
+6. Replace the pending hosted URL at the top of this README and in the SRS, and add screenshots of the sign-in, task dashboard, and task form to `docs/screenshots/`.
 
-The hosted URL is not available yet because the app has not been connected to a deployment service or production database. The deployment check has not been completed.
+**Hosted application:** Pending service creation, Atlas network access, and production deployment. No live URL is available yet.
 
 ## Verification checklist
 
@@ -101,7 +102,8 @@ The hosted URL is not available yet because the app has not been connected to a 
 - [ ] Verify one account cannot read or change another account's tasks.
 - [ ] Review keyboard navigation and mobile layout.
 - [ ] Verify the live URL uses HTTPS and contains no localhost API requests.
-- [ ] Add live application and API URLs after deployment.
+- [ ] Add live application URL after deployment (the API shares the app origin at `/api/v1`).
+- [ ] Add screenshots of the main client-side views to `docs/screenshots/`.
 
 ## Known limitations and next steps
 
