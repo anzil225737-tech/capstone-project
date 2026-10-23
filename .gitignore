@@ -6,3 +6,5 @@ dist/
 npm-debug.log*
 .DS_Store
 .vite/
+screenshots/
+docs/Software_Requirements_Specification.docx
