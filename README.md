@@ -4,7 +4,7 @@ A responsive personal task manager built with MongoDB, Express, React, and Node.
 
 **Repository:** [github.com/anzil225737-tech/capstone-project](https://github.com/anzil225737-tech/capstone-project)
 
-**Hosted application:** Pending Railway deployment and production database configuration.
+**Hosted application:** [https://capstone-project-554w.onrender.com](https://capstone-project-554w.onrender.com)
 **Requirements specification:** [docs/Software Requirements Specification](docs/Software_Requirements_Specification.docx)
 
 ## Features
@@ -81,18 +81,17 @@ All routes use `/api/v1`. Authenticated routes expect `Authorization: Bearer <to
 
 List pagination defaults to 20 records and allows a maximum page size of 100. Error responses use a safe `{ "error": { "code", "message" } }` shape. The API returns 404 for tasks that do not exist or do not belong to the signed-in user.
 
-## Deployment (Railway + MongoDB Atlas)
+## Deployment (Render + MongoDB Atlas)
 
-The app is configured as one Railway web service: Express serves the production React build and the `/api/v1` API from the same HTTPS origin. The source repository is public at [GitHub](https://github.com/anzil225737-tech/capstone-project).
+The public app is live at [https://capstone-project-554w.onrender.com](https://capstone-project-554w.onrender.com). One Render web service serves the production React build and Express API from the same HTTPS origin. The source repository is public at [GitHub](https://github.com/anzil225737-tech/capstone-project).
 
-1. In Railway, create a project from the GitHub repository and use the repository root as the service root directory.
-2. Set the build command to `npm ci && npm ci --prefix server && npm ci --prefix client && npm run build --prefix client` and the start command to `npm start`.
-3. Add `MONGODB_URI` (your Atlas connection string), `JWT_SECRET` (a long randomly generated secret), and `NODE_ENV=production` in the Railway service's Variables. Keep these values in Railway's secret settings; never commit them. Railway supplies `PORT`.
-4. In Atlas, add the Railway service's outbound address to the project's IP access list. Railway's static outbound IP feature is limited to its Pro plan. Avoid opening the Atlas database to all IP addresses; use a restricted network path supported by your account or a host with a fixed outbound IP.
-5. Deploy the service, then generate its public domain from Railway service Settings → Networking. Test the sign-up/sign-in flow and task actions using the HTTPS domain.
-6. Replace the pending hosted URL at the top of this README and in the SRS, and add screenshots of the sign-in, task dashboard, and task form to `docs/screenshots/`.
+For a repeat deployment, connect the repository's `main` branch to a Render Web Service, leave Root Directory blank, use the repository root, set the build command to `npm ci && npm ci --prefix server && npm ci --prefix client && npm run build --prefix client`, and set the start command to `npm start`.
 
-**Hosted application:** Pending service creation, Atlas network access, and production deployment. No live URL is available yet.
+Configure `MONGODB_URI` with the Atlas connection string for the task manager database, `JWT_SECRET` with a long random value, and `NODE_ENV=production` in the Render service's Environment settings. Keep secrets out of Git. Render supplies `PORT`.
+
+Atlas Network Access includes the Render service's outbound ranges for its region. Render documents these ranges as shared with other services in that region; the Atlas database user and password remain required. Preserve any existing Atlas entries used by other assignments. Do not allow all IPs (`0.0.0.0/0`).
+
+The hosted domain is available above. The sign-in page has been confirmed to load. Complete the registration and task workflow check, then add screenshots of the sign-in, task dashboard, and task form to `docs/screenshots/`.
 
 ## Verification checklist
 
@@ -102,7 +101,7 @@ The app is configured as one Railway web service: Express serves the production 
 - [ ] Verify one account cannot read or change another account's tasks.
 - [ ] Review keyboard navigation and mobile layout.
 - [ ] Verify the live URL uses HTTPS and contains no localhost API requests.
-- [ ] Add live application URL after deployment (the API shares the app origin at `/api/v1`).
+- [x] Add live application URL (the API shares the app origin at `/api/v1`).
 - [ ] Add screenshots of the main client-side views to `docs/screenshots/`.
 
 ## Known limitations and next steps
